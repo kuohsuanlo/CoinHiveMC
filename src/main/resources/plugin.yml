@@ -1,0 +1,16 @@
+name: CoinHiveMCPlugin
+main: io.github.kuohsuanlo.coinhivemc.CoinHiveMCPlugin
+version: ${version}
+softdepend: [GriefPrevention]
+softdepend: [PlaceholderAPI]
+commands:
+  coinhivemc:
+    description: .
+    usage: 
+  ckick:
+    description: .
+    usage: 
+permissions:
+    coinhivemc.reload:
+        description: player with this node could reload the plugin's config.
+        default: op
