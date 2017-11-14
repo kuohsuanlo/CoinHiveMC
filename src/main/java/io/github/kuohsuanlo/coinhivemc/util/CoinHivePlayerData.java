@@ -6,17 +6,17 @@ public class CoinHivePlayerData {
 	public final String name;
 	public final long total;
 	public long balance;
-	public long withdraw;
+	public long withdrawn;
 
 	public CoinHivePlayerData(JSONObject user){
 		name = user.get("name").toString();
 		total = Long.valueOf( user.get("total").toString());
 		balance= Long.valueOf( user.get("balance").toString());
-		balance= Long.valueOf( user.get("withdraw").toString());
+		withdrawn= Long.valueOf( user.get("withdrawn").toString());
 	}
 	
 	@Override
 	public String toString() {
-		return "{" + name + "::" + total + "::" + balance + "::" +"}";
+		return "{" + name + "::" + total + "::" + balance + "::" +withdrawn +"}";
 	}
 }
