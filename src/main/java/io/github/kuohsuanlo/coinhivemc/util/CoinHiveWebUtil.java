@@ -33,15 +33,16 @@ public class CoinHiveWebUtil {
 	}
 	public static boolean withdrawBalance(String playername,long amount){
 		json = getJSONObjectFromWithdrawRequest(getCoinHiveWithdrawURL(),playername, amount);
-		boolean success = Boolean.getBoolean(json.get("success").toString());
+		boolean success = json.get("success").toString().equals("true");
+		
 		if(success){
 			Bukkit.getServer().getConsoleSender().sendMessage(
-					ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+json.toJSONString());
+					ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+"success : "+json.toJSONString());
 			updateLocalPlayerData(json);
 		}
 		else{
 			Bukkit.getServer().getConsoleSender().sendMessage(
-					ChatColor.RED+CoinHiveMCPlugin.PREFIX+json.toJSONString());
+					ChatColor.RED+CoinHiveMCPlugin.PREFIX+"failed : "+json.toJSONString());
 		}
 		return success;
 	}
@@ -111,12 +112,8 @@ public class CoinHiveWebUtil {
 		return null;
 	}
 	private static void updateLocalPlayerData(JSONObject user){
-    	CoinHivePlayerData data = new CoinHivePlayerData(user);
-    	CoinHiveMCPlugin.playerData.put(user.get("name").toString(), data);
-    	if(CoinHiveMCPlugin.Verbosity>=1){
-    		Bukkit.getServer().getConsoleSender().sendMessage(
-    						ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+data.toString());
-    	}
+    	long withdrawAmount = Long.valueOf(user.get("amount").toString());
+    	CoinHiveMCPlugin.playerData.get(user.get("name").toString()).balance-=withdrawAmount;
 	}
 	private static void updateLocalAllPlayersData(JSONArray users){
 		for(int i=0;i<users.size();i++){ 

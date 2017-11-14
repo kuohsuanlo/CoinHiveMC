@@ -45,10 +45,6 @@ public class CoinHiveMCCommand implements CommandExecutor {
 				    	arg0.sendMessage(ChatColor.GREEN+e.toString());
 				    }
 				}
-				else if(arg3[0].equals("withdraw")  &&  arg0.hasPermission("coinhivemc.withdraw")){
-					boolean success = CoinHiveWebUtil.withdrawBalance("logocat-server", 0);
-					
-				}
 			}
 			else if (arg3.length ==2 ) {
 				if(arg3[0].equals("withdraw") ){
@@ -56,18 +52,14 @@ public class CoinHiveMCCommand implements CommandExecutor {
 						Player player = (Player)arg0;
 						boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
 						if(success){
-							Bukkit.getServer().getConsoleSender().sendMessage(
-									ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+player.getName()+":"+Long.valueOf(arg3[1])
-									);
+							
 						}
 						
 					}
 					else{
 						boolean success = CoinHiveWebUtil.withdrawBalance("logocat-server", Long.valueOf(arg3[1]));
 						if(success){
-							Bukkit.getServer().getConsoleSender().sendMessage(
-									ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+"logocat-server"+":"+Long.valueOf(arg3[1])
-									);
+						
 						}
 					
 					}
