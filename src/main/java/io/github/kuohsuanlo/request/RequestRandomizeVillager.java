@@ -11,6 +11,7 @@ import org.bukkit.entity.Villager.Profession;
 
 public class RequestRandomizeVillager extends RequestCoinHive{
 	public static int pMax = Profession.values().length;
+	public static double locationDiffMax = 20;
 	public static Profession[] professions ;
 	public static Random rng = new Random();
 	public static int xDiff[] = {-1,0,1};
@@ -27,6 +28,8 @@ public class RequestRandomizeVillager extends RequestCoinHive{
 				
 				Entity[] entitiesRandomized = chunk.getEntities();
 				for(int e=0;e<entitiesRandomized.length;e++){
+					if(entitiesRandomized[e].getLocation().distance(player.getLocation())>=locationDiffMax) continue;
+					
 					if(entitiesRandomized[e].getType().equals(EntityType.VILLAGER)){
 						Villager villager = (Villager) entitiesRandomized[e];
 						villager.setProfession(professions[rng.nextInt(pMax)]);

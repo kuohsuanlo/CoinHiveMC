@@ -14,5 +14,4 @@ public class RequestCommand extends RequestCoinHive{
 		command = command.replace("{player}", player.getName());
 		Bukkit.getServer().dispatchCommand(player, command);
 	}
-
 }

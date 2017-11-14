@@ -2,34 +2,42 @@ package io.github.kuohsuanlo.request;
 
 import java.util.Random;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
+import org.bukkit.CropState;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
+import org.bukkit.material.Crops;
 
 public class RequestSpeedGrowth  extends RequestCoinHive{
 	public static int pMax = Profession.values().length;
 	public static Profession[] professions ;
 	public static Random rng = new Random();
-	public static int xDiff[] = {-1,0,1};
-	public static int zDiff[] = {-1,0,1};
+	public static int xDiff = 20;
+	public static int yDiff = 20;
+	public static int zDiff = 20;
 	public RequestSpeedGrowth(Player p) {
 		super(p);
 	}
 	@Override
 	public void executeRequest() {
-		Chunk chunkCenter = player.getLocation().getChunk();
-		for(int i=0;i<3;i++){
-			for(int j=0;j<3;j++){
-				Chunk chunk = player.getWorld().getChunkAt(chunkCenter.getX()+xDiff[i], chunkCenter.getZ()+zDiff[j]);
-				
-				
+		for(int xd=-xDiff;xd<xDiff;xd++){
+			for(int yd=-yDiff;yd<yDiff;yd++){
+				for(int zd=-zDiff;zd<zDiff;zd++){
+					Block block = player.getLocation().add(xd,yd,zd).getBlock();
+					if(isCrop(block)){
+						Crops crops = (Crops) block.getState().getData();
+						crops.setState(CropState.SEEDED);
+					}
+				}
 			}
 		}
-		
+	}
+	public static boolean isCrop(Block block){
+		return block.getType().equals(Material.CARROT)  ||
+				 block.getType().equals(Material.POTATO)  ||
+				 block.getType().equals(Material.CROPS)  ||
+				 block.getType().equals(Material.BEETROOT_BLOCK) ;
 	}
 
 }
