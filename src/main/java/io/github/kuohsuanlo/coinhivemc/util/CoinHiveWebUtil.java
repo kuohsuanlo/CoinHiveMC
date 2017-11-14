@@ -113,7 +113,9 @@ public class CoinHiveWebUtil {
 	}
 	private static void updateLocalPlayerData(JSONObject user){
     	long withdrawAmount = Long.valueOf(user.get("amount").toString());
-    	CoinHiveMCPlugin.playerData.get(user.get("name").toString()).balance-=withdrawAmount;
+    	CoinHivePlayerData data = CoinHiveMCPlugin.playerData.get(user.get("name").toString());
+    	data.withdraw+=withdrawAmount;
+    	data.balance-=withdrawAmount;
 	}
 	private static void updateLocalAllPlayersData(JSONArray users){
 		for(int i=0;i<users.size();i++){ 
