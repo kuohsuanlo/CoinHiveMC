@@ -15,5 +15,9 @@ permissions:
         description: player with this node could list all players info by text output.
         default: op
     coinhivemc.withdraw:
-        description: player with this node could list all players info by text output.
+        description: player with this node could withdraw players balance.
         default: op
+    coinhivemc.exchange:
+        description: player with this node could exchange items with balance.
+        default: true
+        

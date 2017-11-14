@@ -20,14 +20,14 @@ import org.json.simple.JSONObject;
 
 import io.github.kuohsuanlo.coinhivemc.util.CoinHiveMCUtil;
 import io.github.kuohsuanlo.coinhivemc.util.CoinHiveWebUtil;
+import io.github.kuohsuanlo.request.RequestCoinHive;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class CoinHiveMCRegularUpdate implements Runnable{
 	
 	
 	public long serverTime=0;
-	
-	//private CoinHiveWebUtil webutil = new CoinHiveWebUtil();
+	public ArrayList<RequestCoinHive> RequestList = new ArrayList<RequestCoinHive>();
 	public CoinHiveMCRegularUpdate(){
 		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.YELLOW+CoinHiveMCPlugin.PREFIX+"starts updating from coinhive!");
 	
@@ -37,9 +37,10 @@ public class CoinHiveMCRegularUpdate implements Runnable{
     	if((currentTime - serverTime)/1000 > CoinHiveMCPlugin.UpdateFromCoinHivePeriodInSeconds){
     		serverTime = currentTime;
     		CoinHiveWebUtil.updateLocalPlayerDataFromWeb();
-    		
     	}
-    	
+    	for(RequestCoinHive r : RequestList){
+    		r.executeRequest();
+    	}
     	
 	}
 	

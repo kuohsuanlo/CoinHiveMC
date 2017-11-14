@@ -51,19 +51,33 @@ public class CoinHiveMCCommand implements CommandExecutor {
 					if(arg0 instanceof Player   &&   arg0.hasPermission("coinhivemc.withdraw")){
 						Player player = (Player)arg0;
 						boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
-						if(success){
+					}
+					else{
+						boolean success = CoinHiveWebUtil.withdrawBalance("logocat-server", Long.valueOf(arg3[1]));
+					}
+					
+				}
+			}
+			else if (arg3.length ==2 ) {
+				if(arg3[0].equals("exchange") ){
+					if(arg0 instanceof Player   &&   arg0.hasPermission("coinhivemc.exchange")){
+						if(arg3[1].equals("command")){
+							
+						}
+						else if(arg3[1].equals("command")){
+							
+						}
+						else if(arg3[1].equals("random_village")){
+							
+						}
+						else if(arg3[1].equals("spawn_entity")){
+							
+						}
+						else if(arg3[1].equals("speed_growth")){
 							
 						}
 						
 					}
-					else{
-						boolean success = CoinHiveWebUtil.withdrawBalance("logocat-server", Long.valueOf(arg3[1]));
-						if(success){
-						
-						}
-					
-					}
-					
 				}
 			}
 			
