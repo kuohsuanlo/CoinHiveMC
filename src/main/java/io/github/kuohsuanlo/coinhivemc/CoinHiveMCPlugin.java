@@ -9,25 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.kuohsuanlo.coinhivemc.util.CoinHiveMCUtil;
 import io.github.kuohsuanlo.coinhivemc.util.CoinHivePlayerData;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import net.md_5.bungee.api.ChatColor;
 
 public class CoinHiveMCPlugin extends JavaPlugin {
 	public CoinHiveMCRegularUpdate rlRegularUpdate ;
@@ -45,7 +33,7 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     public static final int EventLocationListMax = 100;
     public static ArrayList<String> enabledWorld;
 
-    public static HashMap<UUID,CoinHivePlayerData> playerData;
+    public static HashMap<String,CoinHivePlayerData> playerData = new HashMap<String,CoinHivePlayerData>();
     public static int UpdateFromCoinHivePeriodInSeconds = 5;
     
     @Override
@@ -118,13 +106,14 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     	
     }
 
-    private void startRoutines(){
+    @SuppressWarnings("deprecation")
+	private void startRoutines(){
     	if(updaterId>=0)
     		this.getServer().getScheduler().cancelTask(updaterId);
     	
     	rlRegularUpdate = null;
-    	rlRegularUpdate = new CoinHiveMCRegularUpdate(this);
-    	updaterId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, rlRegularUpdate, 20, 20);
+    	rlRegularUpdate = new CoinHiveMCRegularUpdate();
+    	updaterId = this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, rlRegularUpdate, 20, 20);
         
     }
 

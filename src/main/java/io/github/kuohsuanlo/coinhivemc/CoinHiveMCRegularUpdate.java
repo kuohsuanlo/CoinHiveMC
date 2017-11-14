@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 
 import io.github.kuohsuanlo.coinhivemc.util.CoinHiveMCUtil;
+import io.github.kuohsuanlo.coinhivemc.util.CoinHiveWebUtil;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class CoinHiveMCRegularUpdate implements Runnable{
@@ -26,38 +27,17 @@ public class CoinHiveMCRegularUpdate implements Runnable{
 	
 	public long serverTime=0;
 	
-	private CoinHiveMCPlugin fplugin;
-	public CoinHiveMCRegularUpdate(CoinHiveMCPlugin plugin){
-		fplugin = plugin;
-		fplugin.getServer().getConsoleSender().sendMessage(ChatColor.YELLOW+CoinHiveMCPlugin.PREFIX+"starts updating from coinhive!");
+	//private CoinHiveWebUtil webutil = new CoinHiveWebUtil();
+	public CoinHiveMCRegularUpdate(){
+		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.YELLOW+CoinHiveMCPlugin.PREFIX+"starts updating from coinhive!");
 	
 	}
     public void run() {
     	long currentTime = System.currentTimeMillis();
     	if((currentTime - serverTime)/1000 > CoinHiveMCPlugin.UpdateFromCoinHivePeriodInSeconds){
-    		
     		serverTime = currentTime;
+    		CoinHiveWebUtil.updateLocalPlayerDataFromWeb();
     		
-    		String url = "https://api.coinhive.com/user/list?secret=14enoIzcm2zjdTO4E59nrsnXmRxdKvYB";
-            try {
-            	InputStream is  = new URL(url).openStream();
-                 BufferedReader rd = new BufferedReader(new InputStreamReader(is,"utf-8")); 
-                 StringBuilder sb = new StringBuilder();
-                 int cp;
-                 while ((cp = rd.read()) != -1) {
-                     sb.append((char) cp);
-                 }
-                
-                 System.out.println(sb.toString());
-                 is.close();
-            } catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-        
     	}
     	
     	

@@ -7,10 +7,13 @@ commands:
   coinhivemc:
     description: .
     usage: 
-  ckick:
-    description: .
-    usage: 
 permissions:
     coinhivemc.reload:
         description: player with this node could reload the plugin's config.
+        default: op
+    coinhivemc.list:
+        description: player with this node could list all players info by text output.
+        default: op
+    coinhivemc.withdraw:
+        description: player with this node could list all players info by text output.
         default: op
