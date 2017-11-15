@@ -31,9 +31,9 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
-
 
 import io.github.kuohsuanlo.coinhivemc.CoinHiveMCPlugin;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -143,13 +143,10 @@ public class CoinHiveMCUtil {
     	
 	}
     
-    
-    public static void setValidSub(){
-    	
-    }
-	public static void readSubData() {
-		
-	   
+    public static Inventory createUI(){
+    	Inventory inv;
+		inv = Bukkit.createInventory(null, 9*6,ChatColor.DARK_GREEN+CoinHiveMCPlugin.PREFIX);
+		return inv;
 	}
     public static void playNormalEffect(Location location){
 		Location effectLocation = location.clone();

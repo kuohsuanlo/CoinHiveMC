@@ -46,8 +46,6 @@ public class CoinHiveMCPlugin extends JavaPlugin {
         getLogger().info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
     }
     public void onReload(){
-    	CoinHiveMCUtil.readSubData();
-    	CoinHiveMCUtil.setValidSub();
     	
     	PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(CHMCListener, this);
@@ -70,8 +68,6 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     		getDataFolder().mkdirs();
             
         }
-    	CoinHiveMCUtil.readSubData();
-    	CoinHiveMCUtil.setValidSub();
     	
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(CHMCListener, this);

@@ -12,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import io.github.kuohsuanlo.coinhivemc.util.CoinHiveMCUtil;
@@ -62,39 +63,55 @@ public class CoinHiveMCCommand implements CommandExecutor {
 					
 				}
 			}
-			else if (arg3.length >=3 ) {
+			else if (arg3.length >=4 ) {
 				if(arg3[0].equals("exchange") ){
+					Player player=null;
 					if(arg0 instanceof Player   &&   arg0.hasPermission("coinhivemc.exchange")){
-						Player player = (Player)arg0;
-						if(arg3[2].equals("command")){
-							boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
-							if(success){
-								RequestCommand r = new RequestCommand(player,rlplugin,"give {player} diamond 3");
-								CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
+						player = (Player)arg0;
+					}
+					else if(arg0 instanceof Player   &&   !arg0.hasPermission("coinhivemc.exchange")){
+						arg0.sendMessage(ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+"player without permission : "+arg0.getName());
+						return false;
+					}
+					else{
+						for(Player p : Bukkit.getOnlinePlayers()){
+							if(p.getName().toLowerCase().equals(arg3[arg3.length-1].toLowerCase())){
+								player = p;
 							}
 						}
-						else if(arg3[2].equals("randomize_villager")){
-							boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
-							if(success){
-								RequestRandomizeVillager r = new RequestRandomizeVillager(player,rlplugin);
-								CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
-							}
+					}
+					if(player==null){
+						arg0.sendMessage(ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+"No such player named : "+arg3[arg3.length-1]);
+						return false;
+					}
+					
+					if(arg3[2].equals("command")){
+						boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+						if(success){
+							RequestCommand r = new RequestCommand(player,rlplugin,"give {player} diamond 3");
+							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
 						}
-						else if(arg3[2].equals("spawn_entity")){
-							boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
-							if(success){
-								RequestSpawnEntity r = new RequestSpawnEntity(player,rlplugin,arg3[3]);
-								CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
-							}
+					}
+					else if(arg3[2].equals("randomize_villager")){
+						boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+						if(success){
+							RequestRandomizeVillager r = new RequestRandomizeVillager(player,rlplugin);
+							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
 						}
-						else if(arg3[2].equals("speed_growth")){
-							boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
-							if(success){
-								RequestSpeedGrowth r = new RequestSpeedGrowth(player,rlplugin);
-								CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
-							}
+					}
+					else if(arg3[2].equals("spawn_entity")){
+						boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+						if(success){
+							RequestSpawnEntity r = new RequestSpawnEntity(player,rlplugin,arg3[3]);
+							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
 						}
-						
+					}
+					else if(arg3[2].equals("speed_growth")){
+						boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+						if(success){
+							RequestSpeedGrowth r = new RequestSpeedGrowth(player,rlplugin);
+							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
+						}
 					}
 				}
 			}
