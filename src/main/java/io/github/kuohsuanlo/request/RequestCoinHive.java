@@ -17,7 +17,7 @@ public abstract class RequestCoinHive {
 	public void executeRequest(){
 		CoinHiveMCUtil.playSuccessSoundEffect(player.getLocation());
 		if(CoinHiveMCPlugin.Verbosity>=1){
-			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+"request executed by"+player.getPlayerListName());
+			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+"request executed by "+player.getPlayerListName());
 		}
 	}
 }

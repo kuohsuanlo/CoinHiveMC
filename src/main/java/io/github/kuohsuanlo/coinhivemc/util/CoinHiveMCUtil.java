@@ -159,8 +159,17 @@ public class CoinHiveMCUtil {
 	}
 
 	public static String getCoinNumber(long hashes){
-		return new DecimalFormat("##.##").format(1.0*hashes/CoinHiveMCPlugin.HashesPerCoin);
+		return new DecimalFormat("####.####").format(1.0*hashes/CoinHiveMCPlugin.HashesPerCoin);
 		
+	}
+	public static void sendSuccessMessage(Player player, long spentHashes){
+		String replaced = CoinHiveMCPlugin.YOU_USED_COIN+"";
+		replaced = replaced.replace("{coins}", CoinHiveMCUtil.getCoinNumber(Long.valueOf(spentHashes)));
+		replaced = replaced.replace("{hashes}", Long.valueOf(spentHashes)+"");
+		player.sendMessage(CoinHiveMCPlugin.PREFIX+replaced);
+	}
+	public static void sendFailMessage(Player player, long spentHashes){
+		player.sendMessage(CoinHiveMCPlugin.PREFIX+CoinHiveMCPlugin.YOU_FAILED);
 	}
 	
 }

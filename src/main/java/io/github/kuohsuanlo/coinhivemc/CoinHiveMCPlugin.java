@@ -30,6 +30,8 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     public static int Verbosity = 0;
     public static long HashesPerCoin = 180000;
     public static String NOT_TEAM_LEADER = "Not Leader";
+    public static String YOU_USED_COIN = "Success. You've used {coins}/{hashes}";
+    public static String YOU_FAILED = "Fail. You don't have enough coins, or the internet is not reachable.";
     
     private static FileConfiguration config;
     private static CoinHiveMCCommand CommandExecutor ;
@@ -85,6 +87,9 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     	config.addDefault("SecretKey",SecretKey);
     	config.addDefault("HashesPerCoin",HashesPerCoin);
     	config.addDefault("NOT_TEAM_LEADER",NOT_TEAM_LEADER);
+    	config.addDefault("YOU_USED_COIN",YOU_USED_COIN);
+    	config.addDefault("YOU_FAILED",YOU_FAILED);
+
     	
     	config.addDefault("UpdateFromCoinHivePeriodInSeconds",UpdateFromCoinHivePeriodInSeconds);
     	
@@ -107,6 +112,9 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     	SecretKey = config.getString("SecretKey");
     	HashesPerCoin = config.getLong("HashesPerCoin");
     	NOT_TEAM_LEADER = config.getString("NOT_TEAM_LEADER");
+    	YOU_USED_COIN = config.getString("YOU_USED_COIN");
+    	YOU_FAILED = config.getString("YOU_FAILED");
+
     	
     }
 
