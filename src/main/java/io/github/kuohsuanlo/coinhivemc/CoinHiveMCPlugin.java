@@ -29,7 +29,10 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     public static String SecretKey = "";
     public static int Verbosity = 0;
     public static long HashesPerCoin = 180000;
+    public static boolean GriefpreventionBuildPermissionNeeded = true;
     public static String NOT_TEAM_LEADER = "Not Leader";
+    public static String NO_BUILD_PERMISSION = "You need build permission to do so.";
+    public static String IS_PUBLIC = "You can't do this in a public claim.";
     public static String YOU_USED_COIN = "Success. You've used {coins}/{hashes}";
     public static String YOU_FAILED = "Fail. You don't have enough coins, or the internet is not reachable.";
     
@@ -83,10 +86,15 @@ public class CoinHiveMCPlugin extends JavaPlugin {
       
     	config = getConfig();
     	config.addDefault("Verbosity",0);
+    	config.addDefault("GriefpreventionBuildPermissionNeeded",GriefpreventionBuildPermissionNeeded);
+    	
     	config.addDefault("PREFIX",PREFIX);
     	config.addDefault("SecretKey",SecretKey);
     	config.addDefault("HashesPerCoin",HashesPerCoin);
     	config.addDefault("NOT_TEAM_LEADER",NOT_TEAM_LEADER);
+    	config.addDefault("NO_BUILD_PERMISSION",NO_BUILD_PERMISSION);
+    	config.addDefault("IS_PUBLIC",IS_PUBLIC);
+    	
     	config.addDefault("YOU_USED_COIN",YOU_USED_COIN);
     	config.addDefault("YOU_FAILED",YOU_FAILED);
 
@@ -108,10 +116,15 @@ public class CoinHiveMCPlugin extends JavaPlugin {
 
     	UpdateFromCoinHivePeriodInSeconds =config.getInt("UpdateFromCoinHivePeriodInSeconds");
     	Verbosity =config.getInt("Verbosity");
+    	GriefpreventionBuildPermissionNeeded = config.getBoolean("GriefpreventionBuildPermissionNeeded");
+    	
     	PREFIX = config.getString("PREFIX");
     	SecretKey = config.getString("SecretKey");
     	HashesPerCoin = config.getLong("HashesPerCoin");
     	NOT_TEAM_LEADER = config.getString("NOT_TEAM_LEADER");
+    	NO_BUILD_PERMISSION = config.getString("NO_BUILD_PERMISSION");
+    	IS_PUBLIC = config.getString("IS_PUBLIC");
+    	
     	YOU_USED_COIN = config.getString("YOU_USED_COIN");
     	YOU_FAILED = config.getString("YOU_FAILED");
 

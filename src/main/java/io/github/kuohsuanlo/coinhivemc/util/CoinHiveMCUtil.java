@@ -110,10 +110,11 @@ public class CoinHiveMCUtil {
 	}
 	
 	public static ArrayList<String> getAllTrustUUID(Location location){
-    	if(!isGPLoaded()) return null;
+		
+    	if(!isGPLoaded()) return new ArrayList<String>();
     	
 		Claim claim = getClaimFromLocation(location);
-		if(!isClaimed(claim)) return null;
+		if(!isClaimed(claim)) return new ArrayList<String>();
 		
 		ArrayList<String> trustUUID = getOwnerUUID(claim);
 		
@@ -171,5 +172,4 @@ public class CoinHiveMCUtil {
 	public static void sendFailMessage(Player player, long spentHashes){
 		player.sendMessage(CoinHiveMCPlugin.PREFIX+CoinHiveMCPlugin.YOU_FAILED);
 	}
-	
 }

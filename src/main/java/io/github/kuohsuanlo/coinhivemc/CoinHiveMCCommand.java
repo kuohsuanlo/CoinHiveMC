@@ -81,9 +81,25 @@ public class CoinHiveMCCommand implements CommandExecutor {
 						}
 					}
 					if(player==null){
-						arg0.sendMessage(ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+"No such player named : "+arg3[arg3.length-1]);
+						arg0.sendMessage(ChatColor.LIGHT_PURPLE+CoinHiveMCPlugin.PREFIX+"No such player named : "+arg3[arg3.length-1]);
 						return false;
 					}
+					if(player.hasPermission("coinhivemc.exempt.fee")){
+						arg3[1]="1";
+					}
+					if(!player.hasPermission("coinhivemc.exempt.place")  &&  CoinHiveMCPlugin.GriefpreventionBuildPermissionNeeded){
+						if(!CoinHiveMCUtil.getAllTrustUUID(player.getLocation()).contains(player.getUniqueId().toString())){
+							player.sendMessage(ChatColor.RED+CoinHiveMCPlugin.PREFIX+CoinHiveMCPlugin.NO_BUILD_PERMISSION);
+							return false;
+						}
+						if(CoinHiveMCUtil.isPublicClaim(CoinHiveMCUtil.getClaimFromLocation(player.getLocation()))){
+							player.sendMessage(ChatColor.RED+CoinHiveMCPlugin.PREFIX+CoinHiveMCPlugin.IS_PUBLIC);
+							return false;
+						}
+					}
+					
+					
+					
 					boolean success =false;
 					if(arg3[2].equals("command")){
 						success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
@@ -116,8 +132,12 @@ public class CoinHiveMCCommand implements CommandExecutor {
 					}
 
 					if(success){
+						Bukkit.getConsoleSender().sendMessage(
+								ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+" success : "+player.getName()+" "+arg3[2]+" cost : "+arg3[1]);
 						CoinHiveMCUtil.sendSuccessMessage(player, Long.valueOf(arg3[1]));}
 					else{
+						Bukkit.getConsoleSender().sendMessage(
+								ChatColor.RED+CoinHiveMCPlugin.PREFIX+" failed  : "+player.getName()+" "+arg3[2]+" cost : "+arg3[1]);
 						CoinHiveMCUtil.sendFailMessage(player, Long.valueOf(arg3[1]));
 					}
 				}

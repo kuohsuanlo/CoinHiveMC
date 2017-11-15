@@ -18,7 +18,7 @@ public class RequestCommand extends RequestCoinHive{
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
 		       public void run(){
 		    	   command = command.replace("{player}", player.getName());
-		   		Bukkit.getServer().dispatchCommand(player, command);
+		   		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
 		       }
 		     }, 0L);
 		

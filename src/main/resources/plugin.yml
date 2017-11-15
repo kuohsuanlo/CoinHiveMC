@@ -20,4 +20,11 @@ permissions:
     coinhivemc.exchange:
         description: player with this node could exchange items with balance.
         default: op
+    coinhivemc.exempt.fee:
+        description: player with this node could exchange with 1 Hash.
+        default: op
+    coinhivemc.exempt.place:
+        description: player with this node could exchange at any where.
+        default: op
+        
         
