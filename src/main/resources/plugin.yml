@@ -19,5 +19,5 @@ permissions:
         default: op
     coinhivemc.exchange:
         description: player with this node could exchange items with balance.
-        default: true
+        default: op
         

@@ -3,15 +3,25 @@ package io.github.kuohsuanlo.request;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import io.github.kuohsuanlo.coinhivemc.CoinHiveMCPlugin;
+import net.md_5.bungee.api.ChatColor;
+
 public class RequestCommand extends RequestCoinHive{
 	public String command;
-	public RequestCommand(Player p, String c) {
-		super(p);
+	public RequestCommand(Player p, CoinHiveMCPlugin pg, String c) {
+		super(p,pg);
 		command = c;
 	}
 	@Override
 	public void executeRequest() {
-		command = command.replace("{player}", player.getName());
-		Bukkit.getServer().dispatchCommand(player, command);
+		super.executeRequest();
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
+		       public void run(){
+		    	   command = command.replace("{player}", player.getName());
+		   		Bukkit.getServer().dispatchCommand(player, command);
+		       }
+		     }, 0L);
+		
+		
 	}
 }

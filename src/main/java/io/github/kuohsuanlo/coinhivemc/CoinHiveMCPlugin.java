@@ -18,7 +18,9 @@ import io.github.kuohsuanlo.coinhivemc.util.CoinHiveMCUtil;
 import io.github.kuohsuanlo.coinhivemc.util.CoinHivePlayerData;
 
 public class CoinHiveMCPlugin extends JavaPlugin {
-	public CoinHiveMCRegularUpdate rlRegularUpdate ;
+
+    
+	public static CoinHiveMCRegularUpdate rlRegularUpdate ;
     public static int updaterId = -1;
     private final CoinHiveMCListener CHMCListener = new CoinHiveMCListener();
 
@@ -26,6 +28,8 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     public static String PREFIX ="[CoinHiveMC] : ";
     public static String SecretKey = "";
     public static int Verbosity = 0;
+    public static long HashesPerCoin = 180000;
+    public static String NOT_TEAM_LEADER = "Not Leader";
     
     private static FileConfiguration config;
     private static CoinHiveMCCommand CommandExecutor ;
@@ -83,6 +87,8 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     	config.addDefault("Verbosity",0);
     	config.addDefault("PREFIX",PREFIX);
     	config.addDefault("SecretKey",SecretKey);
+    	config.addDefault("HashesPerCoin",HashesPerCoin);
+    	config.addDefault("NOT_TEAM_LEADER",NOT_TEAM_LEADER);
     	
     	config.addDefault("UpdateFromCoinHivePeriodInSeconds",UpdateFromCoinHivePeriodInSeconds);
     	
@@ -103,6 +109,8 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     	Verbosity =config.getInt("Verbosity");
     	PREFIX = config.getString("PREFIX");
     	SecretKey = config.getString("SecretKey");
+    	HashesPerCoin = config.getLong("HashesPerCoin");
+    	NOT_TEAM_LEADER = config.getString("NOT_TEAM_LEADER");
     	
     }
 

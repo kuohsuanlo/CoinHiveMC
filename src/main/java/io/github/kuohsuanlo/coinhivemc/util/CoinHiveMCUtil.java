@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,7 +41,7 @@ import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import net.md_5.bungee.api.ChatColor;
 
 public class CoinHiveMCUtil {
-	public static int pNumber = 30;
+	public static int pNumber = 10;
 	public static double radius = 0.3;
 	public static GriefPrevention gp = GriefPrevention.instance;
 	
@@ -150,10 +151,19 @@ public class CoinHiveMCUtil {
 		
 	   
 	}
-	private static void addToSubs(String s){
-		
-		   
+    public static void playNormalEffect(Location location){
+		Location effectLocation = location.clone();
+		Particle particle = Particle.TOTEM;
+		location.getWorld().spawnParticle(particle, effectLocation, pNumber,radius,0,radius,0);
 	}
-	
+    public static void playSuccessSoundEffect(Location location){
+		Location effectLocation = location.clone();
+		location.getWorld().playSound(effectLocation, Sound.ENTITY_PLAYER_LEVELUP, 2.0f, 1.0f);
+	}
+
+	public static String getCoinNumber(long hashes){
+		return new DecimalFormat("##.##").format(1.0*hashes/CoinHiveMCPlugin.HashesPerCoin);
+		
+	}
 	
 }

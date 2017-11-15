@@ -36,13 +36,20 @@ public class CoinHiveMCRegularUpdate implements Runnable{
     	long currentTime = System.currentTimeMillis();
     	if((currentTime - serverTime)/1000 > CoinHiveMCPlugin.UpdateFromCoinHivePeriodInSeconds){
     		serverTime = currentTime;
-    		CoinHiveWebUtil.updateLocalPlayerDataFromWeb();
+    		CoinHiveWebUtil.updateLocalAllPlayerDataFromWeb();
     	}
-    	for(RequestCoinHive r : RequestList){
-    		r.executeRequest();
-    	}
-    	
+    	processRequestList();
+    
 	}
+    public void processRequestList(){
+    	if(RequestList.size()>0){
+			for(RequestCoinHive r : RequestList){
+				r.executeRequest();
+				
+			}
+			RequestList.clear();
+    	}
+    }
 	
 }
 

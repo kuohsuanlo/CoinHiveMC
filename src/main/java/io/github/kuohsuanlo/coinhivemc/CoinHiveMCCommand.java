@@ -17,6 +17,10 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import io.github.kuohsuanlo.coinhivemc.util.CoinHiveMCUtil;
 import io.github.kuohsuanlo.coinhivemc.util.CoinHivePlayerData;
 import io.github.kuohsuanlo.coinhivemc.util.CoinHiveWebUtil;
+import io.github.kuohsuanlo.request.RequestCommand;
+import io.github.kuohsuanlo.request.RequestRandomizeVillager;
+import io.github.kuohsuanlo.request.RequestSpawnEntity;
+import io.github.kuohsuanlo.request.RequestSpeedGrowth;
 
 /**
  * Handler for the /pos sample command.
@@ -58,23 +62,37 @@ public class CoinHiveMCCommand implements CommandExecutor {
 					
 				}
 			}
-			else if (arg3.length ==2 ) {
+			else if (arg3.length >=3 ) {
 				if(arg3[0].equals("exchange") ){
 					if(arg0 instanceof Player   &&   arg0.hasPermission("coinhivemc.exchange")){
-						if(arg3[1].equals("command")){
-							
+						Player player = (Player)arg0;
+						if(arg3[2].equals("command")){
+							boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+							if(success){
+								RequestCommand r = new RequestCommand(player,rlplugin,"give {player} diamond 3");
+								CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
+							}
 						}
-						else if(arg3[1].equals("command")){
-							
+						else if(arg3[2].equals("randomize_villager")){
+							boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+							if(success){
+								RequestRandomizeVillager r = new RequestRandomizeVillager(player,rlplugin);
+								CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
+							}
 						}
-						else if(arg3[1].equals("random_village")){
-							
+						else if(arg3[2].equals("spawn_entity")){
+							boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+							if(success){
+								RequestSpawnEntity r = new RequestSpawnEntity(player,rlplugin,arg3[3]);
+								CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
+							}
 						}
-						else if(arg3[1].equals("spawn_entity")){
-							
-						}
-						else if(arg3[1].equals("speed_growth")){
-							
+						else if(arg3[2].equals("speed_growth")){
+							boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+							if(success){
+								RequestSpeedGrowth r = new RequestSpeedGrowth(player,rlplugin);
+								CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
+							}
 						}
 						
 					}
