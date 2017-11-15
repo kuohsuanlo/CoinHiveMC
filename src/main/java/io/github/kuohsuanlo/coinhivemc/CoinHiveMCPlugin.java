@@ -30,6 +30,7 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     public static int Verbosity = 0;
     public static long HashesPerCoin = 180000;
     public static boolean GriefpreventionBuildPermissionNeeded = true;
+    public static boolean SpawnerEggNeedPermission = true;
     public static String NOT_TEAM_LEADER = "Not Leader";
     public static String NO_BUILD_PERMISSION = "You need build permission to do so.";
     public static String IS_PUBLIC = "You can't do this in a public claim.";
@@ -86,6 +87,7 @@ public class CoinHiveMCPlugin extends JavaPlugin {
       
     	config = getConfig();
     	config.addDefault("Verbosity",0);
+    	config.addDefault("SpawnerEggNeedPermission",SpawnerEggNeedPermission);
     	config.addDefault("GriefpreventionBuildPermissionNeeded",GriefpreventionBuildPermissionNeeded);
     	
     	config.addDefault("PREFIX",PREFIX);
@@ -116,6 +118,7 @@ public class CoinHiveMCPlugin extends JavaPlugin {
 
     	UpdateFromCoinHivePeriodInSeconds =config.getInt("UpdateFromCoinHivePeriodInSeconds");
     	Verbosity =config.getInt("Verbosity");
+    	SpawnerEggNeedPermission = config.getBoolean("SpawnerEggNeedPermission");
     	GriefpreventionBuildPermissionNeeded = config.getBoolean("GriefpreventionBuildPermissionNeeded");
     	
     	PREFIX = config.getString("PREFIX");
