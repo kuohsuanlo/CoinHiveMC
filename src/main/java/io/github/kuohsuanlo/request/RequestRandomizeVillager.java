@@ -20,7 +20,6 @@ public class RequestRandomizeVillager extends RequestCoinHive{
 			Profession.BUTCHER,
 			Profession.FARMER,
 			Profession.LIBRARIAN,
-			Profession.NITWIT,
 			Profession.PRIEST
 	};
 	public static int pMax = professions.length;
@@ -52,9 +51,22 @@ public class RequestRandomizeVillager extends RequestCoinHive{
 		for(int e=0;e<entitiesRandomized.length;e++){
 			if(entitiesRandomized[e].getLocation().distance(player.getLocation())>=locationDiffMax) continue;
 			
+
 			if(entitiesRandomized[e].getType().equals(EntityType.VILLAGER)){
 				Villager oldVillager = (Villager) entitiesRandomized[e];
 				Villager newVillager = (Villager) oldVillager.getWorld().spawnEntity(oldVillager.getLocation(), EntityType.VILLAGER);
+				int maxTry = 5;
+				int currentTry=0;
+				while(newVillager.getProfession().equals(oldVillager.getProfession())  ||
+						newVillager.getProfession().equals(Profession.NITWIT)){
+					
+					if(currentTry>=maxTry) break;
+					currentTry++;
+					newVillager.remove();
+					newVillager = (Villager) oldVillager.getWorld().spawnEntity(oldVillager.getLocation(), EntityType.VILLAGER);
+				
+				}
+				
 				cloneVillagerProperties(oldVillager,newVillager);
 				CoinHiveMCUtil.playNormalEffect(newVillager.getLocation());
 				oldVillager.remove();
@@ -70,6 +82,7 @@ public class RequestRandomizeVillager extends RequestCoinHive{
 		new_v.setBreed(old_v.canBreed());
 		new_v.setCustomName(old_v.getCustomName());
 		new_v.setProfession(returnAnotherRandomProfessionIdx(old_v.getProfession()));
+		
 	}
 	public Profession returnAnotherRandomProfessionIdx(Profession p){
 		for(int i=0;i<professions.length;i++){
