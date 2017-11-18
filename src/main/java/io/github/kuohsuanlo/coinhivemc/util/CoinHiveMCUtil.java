@@ -97,6 +97,7 @@ public class CoinHiveMCUtil {
 		return true;
 	}
 	public static boolean isPublicClaim(Claim claim){
+		if(claim==null) return false;
 		clearTrustList();
 		claim.getPermissions(buildTrust, containerTrust, accessTrust , managerTrust);
 		return(buildTrust.contains("public"));

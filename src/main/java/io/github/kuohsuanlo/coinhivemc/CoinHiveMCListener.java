@@ -36,6 +36,7 @@ import io.github.kuohsuanlo.coinhivemc.util.CoinHivePlayerData;
 import net.md_5.bungee.api.ChatColor;
 
 public class CoinHiveMCListener implements Listener {
+	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
 		Player player = event.getPlayer();
