@@ -64,7 +64,8 @@ public class CoinHiveMCCommand implements CommandExecutor {
 				}
 			}
 			else if (arg3.length >=3 ) {
-				if(arg3[0].equals("exchange") ){
+				if(arg3[0].equals("exchange")  ||  arg3[0].equals("free-exchange") ){
+					
 					Player player=null;
 					if(arg0 instanceof Player   &&   arg0.hasPermission("coinhivemc.exchange")){
 						player = (Player)arg0;
@@ -84,9 +85,11 @@ public class CoinHiveMCCommand implements CommandExecutor {
 						arg0.sendMessage(ChatColor.LIGHT_PURPLE+CoinHiveMCPlugin.PREFIX+"No such player named : "+arg3[arg3.length-1]);
 						return false;
 					}
-					if(player.hasPermission("coinhivemc.exempt.fee")){
-						arg3[1]="1";
+					boolean free = false;
+					if(player.hasPermission("coinhivemc.exempt.fee")  ||  arg3[0].equals("free-exchange")){
+						free=true;
 					}
+					
 					if(!player.hasPermission("coinhivemc.exempt.place")  &&  CoinHiveMCPlugin.GriefpreventionBuildPermissionNeeded){
 						if(!CoinHiveMCUtil.getAllTrustUUID(player.getLocation()).contains(player.getUniqueId().toString())){
 							player.sendMessage(ChatColor.RED+CoinHiveMCPlugin.PREFIX+CoinHiveMCPlugin.NO_BUILD_PERMISSION);
@@ -101,8 +104,9 @@ public class CoinHiveMCCommand implements CommandExecutor {
 					
 					
 					boolean success =false;
+					if(free) success=true;
 					if(arg3[2].equals("command")){
-						success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
 						if(success){
 							String commandString = arg3[3].replace("#", " ");
 							RequestCommand r = new RequestCommand(player,rlplugin,commandString);
@@ -110,21 +114,21 @@ public class CoinHiveMCCommand implements CommandExecutor {
 						}
 					}
 					else if(arg3[2].equals("randomize_villager")){
-						success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
 						if(success){
 							RequestRandomizeVillager r = new RequestRandomizeVillager(player,rlplugin);
 							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
 						}
 					}
 					else if(arg3[2].equals("spawn_entity")){
-						success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
 						if(success){
 							RequestSpawnEntity r = new RequestSpawnEntity(player,rlplugin,arg3[3]);
 							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
 						}
 					}
 					else if(arg3[2].equals("speed_growth")){
-						success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
 						if(success){
 							RequestSpeedGrowth r = new RequestSpeedGrowth(player,rlplugin);
 							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
