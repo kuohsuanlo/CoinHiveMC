@@ -68,8 +68,9 @@ public class RequestRandomizeVillager extends RequestCoinHive{
 				}
 				
 				cloneVillagerProperties(oldVillager,newVillager);
-				CoinHiveMCUtil.playNormalEffect(newVillager.getLocation());
 				oldVillager.remove();
+				CoinHiveMCUtil.playNormalEffect(newVillager.getLocation());
+				
 				
 			}
 		}
@@ -81,8 +82,6 @@ public class RequestRandomizeVillager extends RequestCoinHive{
 		new_v.setAge(old_v.getAge());
 		new_v.setBreed(old_v.canBreed());
 		new_v.setCustomName(old_v.getCustomName());
-		new_v.setProfession(returnAnotherRandomProfessionIdx(old_v.getProfession()));
-		
 	}
 	public Profession returnAnotherRandomProfessionIdx(Profession p){
 		for(int i=0;i<professions.length;i++){
