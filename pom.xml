@@ -16,6 +16,11 @@
         <id>placeholderapi</id>
         <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
     </repository>
+  <repository>
+    <id>lang-utils-repo</id>
+    <url>https://raw.github.com/MascusJeoraly/LanguageUtils/mvn-repo/</url>
+  </repository>
+
   </repositories>
 
 <dependencies>
@@ -45,6 +50,12 @@
       <version>2.8.2</version>
       <scope>provided</scope>
     </dependency>
+  <dependency>
+    <groupId>com.meowj</groupId>
+    <artifactId>LangUtils</artifactId>
+    <!--Please check the latest version -->
+    <version>1.9</version>
+  </dependency>
   </dependencies>
 
   <build>

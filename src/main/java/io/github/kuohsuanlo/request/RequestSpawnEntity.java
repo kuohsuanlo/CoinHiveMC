@@ -1,8 +1,12 @@
 package io.github.kuohsuanlo.request;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+
+import com.meowj.langutils.lang.LanguageHelper;
 
 import io.github.kuohsuanlo.coinhivemc.CoinHiveMCPlugin;
 import io.github.kuohsuanlo.coinhivemc.util.CoinHiveMCUtil;
@@ -24,7 +28,10 @@ public class RequestSpawnEntity extends RequestCoinHive{
 		}
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
 		       public void run(){
-		    	   player.getWorld().spawnEntity(player.getLocation(), type);
+		    	   Entity spawned = player.getWorld().spawnEntity(player.getLocation(), type);
+		    	   String localized_name = LanguageHelper.getEntityName(spawned.getType(), "zh_tw");
+		    	   spawned.setCustomName(localized_name);
+		    	   ((LivingEntity) spawned).setRemoveWhenFarAway(false);
 		    	   CoinHiveMCUtil.playNormalEffect(player.getLocation());
 		       }
 		     }, 0L);
