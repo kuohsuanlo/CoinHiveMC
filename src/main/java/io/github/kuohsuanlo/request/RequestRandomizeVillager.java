@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -54,7 +55,14 @@ public class RequestRandomizeVillager extends RequestCoinHive{
 
 			if(entitiesRandomized[e].getType().equals(EntityType.VILLAGER)){
 				Villager oldVillager = (Villager) entitiesRandomized[e];
-				Villager newVillager = (Villager) oldVillager.getWorld().spawnEntity(oldVillager.getLocation(), EntityType.VILLAGER);
+				boolean isAdult = oldVillager.isAdult();
+				boolean canBreed = oldVillager.canBreed();
+				int age = oldVillager.getAge();
+				String customName = oldVillager.getCustomName();
+				Location oldLocation = oldVillager.getLocation().clone();
+				oldVillager.remove();
+				
+				Villager newVillager = (Villager) oldLocation.getWorld().spawnEntity(oldLocation, EntityType.VILLAGER);
 				int maxTry = 5;
 				int currentTry=0;
 				while(newVillager.getProfession().equals(oldVillager.getProfession())  ||
@@ -66,21 +74,16 @@ public class RequestRandomizeVillager extends RequestCoinHive{
 					newVillager = (Villager) oldVillager.getWorld().spawnEntity(oldVillager.getLocation(), EntityType.VILLAGER);
 				
 				}
+				if(isAdult) newVillager.setAdult();
+				else newVillager.setBaby();
+				newVillager.setBreed(canBreed);
+				newVillager.setAge(age);
+				newVillager.setCustomName(customName);
 				
-				cloneVillagerProperties(oldVillager,newVillager);
-				oldVillager.remove();
 				CoinHiveMCUtil.playNormalEffect(newVillager.getLocation());
 				
 				
 			}
 		}
-	}
-	private void cloneVillagerProperties(Villager old_v, Villager new_v){
-		if(old_v.isAdult()) new_v.setAdult();
-		else new_v.setBaby();
-		
-		new_v.setAge(old_v.getAge());
-		new_v.setBreed(old_v.canBreed());
-		new_v.setCustomName(old_v.getCustomName());
 	}
 }
