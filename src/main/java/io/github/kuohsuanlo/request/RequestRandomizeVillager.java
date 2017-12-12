@@ -79,7 +79,7 @@ public class RequestRandomizeVillager extends RequestCoinHive{
 				newVillager.setBreed(canBreed);
 				newVillager.setAge(age);
 				newVillager.setCustomName(customName);
-				
+				newVillager.setRemoveWhenFarAway(false);
 				CoinHiveMCUtil.playNormalEffect(newVillager.getLocation());
 				
 				
