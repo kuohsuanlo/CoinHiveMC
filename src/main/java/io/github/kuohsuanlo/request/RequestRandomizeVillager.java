@@ -83,12 +83,4 @@ public class RequestRandomizeVillager extends RequestCoinHive{
 		new_v.setBreed(old_v.canBreed());
 		new_v.setCustomName(old_v.getCustomName());
 	}
-	public Profession returnAnotherRandomProfessionIdx(Profession p){
-		for(int i=0;i<professions.length;i++){
-			if(p.equals(professions[i])){
-				return professions[(i+rng.nextInt(pMax-1))%pMax];
-			}
-		}
-		return professions[0];
-	}
 }
