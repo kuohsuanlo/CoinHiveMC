@@ -34,124 +34,129 @@ public class CoinHiveMCCommand implements CommandExecutor {
     }
 	
 	
-	public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
+	@SuppressWarnings("deprecation")
+	public boolean onCommand(final CommandSender arg0,final Command arg1,final String arg2,final String[] arg3) {
 		// TODO Auto-generated method stub
 		if (arg2.equalsIgnoreCase("coinhivemc")) {
+			Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(rlplugin, new Runnable() {
+	            public void run() {
+	            	if (arg3.length ==1 ) {
+	    				if(arg3[0].equals("reload")  &&  arg0.hasPermission("coinhivemc.reload")){
+	    					rlplugin.onReload();
+	    					arg0.sendMessage(ChatColor.RED+CoinHiveMCPlugin.PREFIX+" reloaded.");
+	    			        
+	    					return;
+	    				}
+	    				else if(arg3[0].equals("list")  &&  arg0.hasPermission("coinhivemc.list")){
+	    				    for(Entry<String, CoinHivePlayerData> e : CoinHiveMCPlugin.playerData.entrySet()) {
+	    				    	arg0.sendMessage(ChatColor.GREEN+e.toString());
+	    				    }
+	    				}
+	    			}
+	    			else if (arg3.length ==2 ) {
+	    				if(arg3[0].equals("withdraw") ){
+	    					if(arg0 instanceof Player   &&   arg0.hasPermission("coinhivemc.withdraw")){
+	    						Player player = (Player)arg0;
+	    						boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+	    					}
+	    					else{
+	    						boolean success = CoinHiveWebUtil.withdrawBalance("logocat-server", Long.valueOf(arg3[1]));
+	    					}
+	    					
+	    				}
+	    			}
+	    			else if (arg3.length >=3 ) {
+	    				if(arg3[0].equals("exchange")  ||  arg3[0].equals("free-exchange") ){
+	    					
+	    					Player player=null;
+	    					if(arg0 instanceof Player   &&   arg0.hasPermission("coinhivemc.exchange")){
+	    						player = (Player)arg0;
+	    					}
+	    					else if(arg0 instanceof Player   &&   !arg0.hasPermission("coinhivemc.exchange")){
+	    						arg0.sendMessage(ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+"player without permission : "+arg0.getName());
+	    						return;
+	    					}
+	    					else{
+	    						for(Player p : Bukkit.getOnlinePlayers()){
+	    							if(p.getName().toLowerCase().equals(arg3[arg3.length-1].toLowerCase())){
+	    								player = p;
+	    							}
+	    						}
+	    					}
+	    					if(player==null){
+	    						arg0.sendMessage(ChatColor.LIGHT_PURPLE+CoinHiveMCPlugin.PREFIX+"No such player named : "+arg3[arg3.length-1]);
+	    						return;
+	    					}
+	    					boolean free = false;
+	    					if(player.hasPermission("coinhivemc.exempt.fee")  ||  arg3[0].equals("free-exchange")){
+	    						free=true;
+	    					}
+	    					
+	    					if(!player.hasPermission("coinhivemc.exempt.place")  &&  CoinHiveMCPlugin.GriefpreventionBuildPermissionNeeded){
+	    						if(!CoinHiveMCUtil.getAllTrustUUID(player.getLocation()).contains(player.getUniqueId().toString())){
+	    							player.sendMessage(ChatColor.RED+CoinHiveMCPlugin.PREFIX+CoinHiveMCPlugin.NO_BUILD_PERMISSION);
+	    							return;
+	    						}
+	    						if(CoinHiveMCUtil.isPublicClaim(CoinHiveMCUtil.getClaimFromLocation(player.getLocation()))){
+	    							player.sendMessage(ChatColor.RED+CoinHiveMCPlugin.PREFIX+CoinHiveMCPlugin.IS_PUBLIC);
+	    							return ;
+	    						}
+	    					}
+	    					
+	    					
+	    					
+	    					boolean success =false;
+	    					if(free) success=true;
+	    					if(arg3[2].equals("command")){
+	    						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+	    						if(success){
+	    							String commandString = arg3[3].replace("#", " ");
+	    							RequestCommand r = new RequestCommand(player,rlplugin,commandString);
+	    							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
+	    						}
+	    					}
+	    					else if(arg3[2].equals("randomize_villager")){
+	    						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+	    						if(success){
+	    							RequestRandomizeVillager r = new RequestRandomizeVillager(player,rlplugin);
+	    							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
+	    						}
+	    					}
+	    					else if(arg3[2].equals("spawn_entity")){
+	    						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+	    						if(success){
+	    							RequestSpawnEntity r = new RequestSpawnEntity(player,rlplugin,arg3[3]);
+	    							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
+	    						}
+	    					}
+	    					else if(arg3[2].equals("speed_growth")){
+	    						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
+	    						if(success){
+	    							RequestSpeedGrowth r = new RequestSpeedGrowth(player,rlplugin);
+	    							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
+	    						}
+	    					}
+	    					if(free){
+	    						Bukkit.getConsoleSender().sendMessage(
+	    							ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+" success : "+player.getName()+" "+arg3[2]+" cost : "+arg3[1]);
+	    						return;
+	    					}
+	    					if(success){
+	    						Bukkit.getConsoleSender().sendMessage(
+	    								ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+" success : "+player.getName()+" "+arg3[2]+" cost : "+arg3[1]);
+	    						CoinHiveMCUtil.sendSuccessMessage(player, Long.valueOf(arg3[1]));}
+	    					else{
+	    						Bukkit.getConsoleSender().sendMessage(
+	    								ChatColor.RED+CoinHiveMCPlugin.PREFIX+" failed  : "+player.getName()+" "+arg3[2]+" cost : "+arg3[1]);
+	    						CoinHiveMCUtil.sendFailMessage(player, Long.valueOf(arg3[1]));
+	    					}
+	    				}
+	    			}
+	    			
+	            }
+	        }, 0L);
 			
-			if (arg3.length ==1 ) {
-				if(arg3[0].equals("reload")  &&  arg0.hasPermission("coinhivemc.reload")){
-					rlplugin.onReload();
-					arg0.sendMessage(ChatColor.RED+CoinHiveMCPlugin.PREFIX+" reloaded.");
-			        
-					return true;
-				}
-				else if(arg3[0].equals("list")  &&  arg0.hasPermission("coinhivemc.list")){
-				    for(Entry<String, CoinHivePlayerData> e : CoinHiveMCPlugin.playerData.entrySet()) {
-				    	arg0.sendMessage(ChatColor.GREEN+e.toString());
-				    }
-				}
-			}
-			else if (arg3.length ==2 ) {
-				if(arg3[0].equals("withdraw") ){
-					if(arg0 instanceof Player   &&   arg0.hasPermission("coinhivemc.withdraw")){
-						Player player = (Player)arg0;
-						boolean success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
-					}
-					else{
-						boolean success = CoinHiveWebUtil.withdrawBalance("logocat-server", Long.valueOf(arg3[1]));
-					}
-					
-				}
-			}
-			else if (arg3.length >=3 ) {
-				if(arg3[0].equals("exchange")  ||  arg3[0].equals("free-exchange") ){
-					
-					Player player=null;
-					if(arg0 instanceof Player   &&   arg0.hasPermission("coinhivemc.exchange")){
-						player = (Player)arg0;
-					}
-					else if(arg0 instanceof Player   &&   !arg0.hasPermission("coinhivemc.exchange")){
-						arg0.sendMessage(ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+"player without permission : "+arg0.getName());
-						return false;
-					}
-					else{
-						for(Player p : Bukkit.getOnlinePlayers()){
-							if(p.getName().toLowerCase().equals(arg3[arg3.length-1].toLowerCase())){
-								player = p;
-							}
-						}
-					}
-					if(player==null){
-						arg0.sendMessage(ChatColor.LIGHT_PURPLE+CoinHiveMCPlugin.PREFIX+"No such player named : "+arg3[arg3.length-1]);
-						return false;
-					}
-					boolean free = false;
-					if(player.hasPermission("coinhivemc.exempt.fee")  ||  arg3[0].equals("free-exchange")){
-						free=true;
-					}
-					
-					if(!player.hasPermission("coinhivemc.exempt.place")  &&  CoinHiveMCPlugin.GriefpreventionBuildPermissionNeeded){
-						if(!CoinHiveMCUtil.getAllTrustUUID(player.getLocation()).contains(player.getUniqueId().toString())){
-							player.sendMessage(ChatColor.RED+CoinHiveMCPlugin.PREFIX+CoinHiveMCPlugin.NO_BUILD_PERMISSION);
-							return false;
-						}
-						if(CoinHiveMCUtil.isPublicClaim(CoinHiveMCUtil.getClaimFromLocation(player.getLocation()))){
-							player.sendMessage(ChatColor.RED+CoinHiveMCPlugin.PREFIX+CoinHiveMCPlugin.IS_PUBLIC);
-							return false;
-						}
-					}
-					
-					
-					
-					boolean success =false;
-					if(free) success=true;
-					if(arg3[2].equals("command")){
-						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
-						if(success){
-							String commandString = arg3[3].replace("#", " ");
-							RequestCommand r = new RequestCommand(player,rlplugin,commandString);
-							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
-						}
-					}
-					else if(arg3[2].equals("randomize_villager")){
-						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
-						if(success){
-							RequestRandomizeVillager r = new RequestRandomizeVillager(player,rlplugin);
-							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
-						}
-					}
-					else if(arg3[2].equals("spawn_entity")){
-						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
-						if(success){
-							RequestSpawnEntity r = new RequestSpawnEntity(player,rlplugin,arg3[3]);
-							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
-						}
-					}
-					else if(arg3[2].equals("speed_growth")){
-						if(!free) success = CoinHiveWebUtil.withdrawBalance(player.getName(), Long.valueOf(arg3[1]));
-						if(success){
-							RequestSpeedGrowth r = new RequestSpeedGrowth(player,rlplugin);
-							CoinHiveMCPlugin.rlRegularUpdate.RequestList.add(r);
-						}
-					}
-					if(free){
-						Bukkit.getConsoleSender().sendMessage(
-							ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+" success : "+player.getName()+" "+arg3[2]+" cost : "+arg3[1]);
-						return true;
-					}
-					if(success){
-						Bukkit.getConsoleSender().sendMessage(
-								ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+" success : "+player.getName()+" "+arg3[2]+" cost : "+arg3[1]);
-						CoinHiveMCUtil.sendSuccessMessage(player, Long.valueOf(arg3[1]));}
-					else{
-						Bukkit.getConsoleSender().sendMessage(
-								ChatColor.RED+CoinHiveMCPlugin.PREFIX+" failed  : "+player.getName()+" "+arg3[2]+" cost : "+arg3[1]);
-						CoinHiveMCUtil.sendFailMessage(player, Long.valueOf(arg3[1]));
-					}
-				}
-			}
-			
-			return false;
+			return true;
 		}
 		return false;
 	}
