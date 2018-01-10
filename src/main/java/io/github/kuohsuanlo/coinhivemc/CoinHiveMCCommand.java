@@ -135,6 +135,8 @@ public class CoinHiveMCCommand implements CommandExecutor {
 						}
 					}
 					if(free){
+						Bukkit.getConsoleSender().sendMessage(
+							ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+" success : "+player.getName()+" "+arg3[2]+" cost : "+arg3[1]);
 						return true;
 					}
 					if(success){
