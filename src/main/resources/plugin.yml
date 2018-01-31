@@ -1,8 +1,7 @@
 name: CoinHiveMCPlugin
 main: io.github.kuohsuanlo.coinhivemc.CoinHiveMCPlugin
 version: ${version}
-softdepend: [GriefPrevention]
-softdepend: [PlaceholderAPI]
+softdepend: [GriefPrevention,PlaceholderAPI]
 commands:
   coinhivemc:
     description: .
