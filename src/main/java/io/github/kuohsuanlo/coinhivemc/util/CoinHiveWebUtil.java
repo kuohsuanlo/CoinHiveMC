@@ -26,15 +26,24 @@ import net.md_5.bungee.api.ChatColor;
 public class CoinHiveWebUtil {
 	public static JSONParser parser = new JSONParser();
 	public static JSONObject json = new JSONObject();
-	public static void updateLocalAllPlayerDataFromWeb(){
-		try {
-			json = getJSONObjectFromURL(getCoinHiveListURL(),"GET");
-			updateLocalAllPlayersData((JSONArray) json.get("users"));
-		}
-		catch (NullPointerException e) {
-			Bukkit.getServer().getConsoleSender().sendMessage(
-					ChatColor.LIGHT_PURPLE+CoinHiveMCPlugin.PREFIX+"network might be unreachable");
-		}  
+	
+	
+	@SuppressWarnings("deprecation")
+	public static void updateLocalAllPlayerDataFromWeb(CoinHiveMCPlugin plugin){
+		Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				try {
+					json = getJSONObjectFromURL(getCoinHiveListURL(),"GET");
+					updateLocalAllPlayersData((JSONArray) json.get("users"));
+				}
+				catch (NullPointerException e) {
+					Bukkit.getServer().getConsoleSender().sendMessage(
+							ChatColor.LIGHT_PURPLE+CoinHiveMCPlugin.PREFIX+"network might be unreachable");
+				}  
+			}
+		}, 0L);
+		
+		
 	}
 	public static boolean withdrawBalance(String playername,long amount){
 		try {

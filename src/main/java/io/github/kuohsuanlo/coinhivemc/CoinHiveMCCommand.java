@@ -64,12 +64,12 @@ public class CoinHiveMCCommand implements CommandExecutor {
 	    					}
 	    				}
 	    				else if(arg3[0].equals("show") ){
-		   					 for(Entry<String, CoinHivePlayerData> e : CoinHiveMCPlugin.playerData.entrySet()) {
-		   				    	if(e.getKey().equals(arg3[1])){
-		   				    		arg0.sendMessage(ChatColor.GREEN+e.toString());	
-		   				    	}
-		   					 }
-		   					 arg0.sendMessage("player name : "+arg3[1]+" not found!");	
+	    					CoinHivePlayerData data = CoinHiveMCPlugin.playerData.get(arg3[1].toLowerCase());
+	    					String output;
+	    					if(data == null) output = " not found!";
+	    					else output = CoinHiveMCUtil.getCoinNumber(data.balance);
+	    					
+		   					 arg0.sendMessage("player name : "+arg3[1]+output);	
 		   					
 	    				}
 	    			}

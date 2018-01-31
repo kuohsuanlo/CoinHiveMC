@@ -44,7 +44,7 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     public static ArrayList<String> enabledWorld;
 
     public static HashMap<String,CoinHivePlayerData> playerData = new HashMap<String,CoinHivePlayerData>();
-    public static int UpdateFromCoinHivePeriodInSeconds = 5;
+    public static int UpdateFromCoinHivePeriodInSeconds = 20;
     
     @Override
     public void onDisable() {
@@ -140,7 +140,7 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     		this.getServer().getScheduler().cancelTask(updaterId);
     	
     	rlRegularUpdate = null;
-    	rlRegularUpdate = new CoinHiveMCRegularUpdate();
+    	rlRegularUpdate = new CoinHiveMCRegularUpdate(this);
     	updaterId = this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, rlRegularUpdate, 20, 20);
         
     }

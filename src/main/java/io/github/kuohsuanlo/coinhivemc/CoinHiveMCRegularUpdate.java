@@ -27,16 +27,17 @@ public class CoinHiveMCRegularUpdate implements Runnable{
 	
 	
 	public long serverTime=0;
+	public CoinHiveMCPlugin chplugin;
 	public ArrayList<RequestCoinHive> RequestList = new ArrayList<RequestCoinHive>();
-	public CoinHiveMCRegularUpdate(){
+	public CoinHiveMCRegularUpdate(CoinHiveMCPlugin plugin){
 		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.YELLOW+CoinHiveMCPlugin.PREFIX+"starts updating from coinhive!");
-	
+		chplugin = plugin;
 	}
     public void run() {
     	long currentTime = System.currentTimeMillis();
     	if((currentTime - serverTime)/1000 > CoinHiveMCPlugin.UpdateFromCoinHivePeriodInSeconds){
     		serverTime = currentTime;
-    		CoinHiveWebUtil.updateLocalAllPlayerDataFromWeb();
+    		CoinHiveWebUtil.updateLocalAllPlayerDataFromWeb(chplugin);
     	}
     	processRequestList();
     
