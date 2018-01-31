@@ -17,6 +17,9 @@ permissions:
     coinhivemc.withdraw:
         description: player with this node could withdraw players balance.
         default: op
+    coinhivemc.show:
+        description: player with this node could show players coinhive info.
+        default: op
     coinhivemc.exchange:
         description: player with this node could exchange items with balance.
         default: op

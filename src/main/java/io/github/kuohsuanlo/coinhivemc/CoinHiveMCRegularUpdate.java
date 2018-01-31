@@ -45,7 +45,6 @@ public class CoinHiveMCRegularUpdate implements Runnable{
     	if(RequestList.size()>0){
 			for(RequestCoinHive r : RequestList){
 				r.executeRequest();
-				
 			}
 			RequestList.clear();
     	}

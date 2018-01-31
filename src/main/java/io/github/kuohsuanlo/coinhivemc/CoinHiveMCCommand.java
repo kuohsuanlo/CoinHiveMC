@@ -60,7 +60,16 @@ public class CoinHiveMCCommand implements CommandExecutor {
 					else{
 						boolean success = CoinHiveWebUtil.withdrawBalance("logocat-server", Long.valueOf(arg3[1]));
 					}
-					
+				}
+				else if(arg3[0].equals("show") ){
+					 for(Entry<String, CoinHivePlayerData> e : CoinHiveMCPlugin.playerData.entrySet()) {
+				    	if(e.getKey().equals(arg3[1])){
+				    		arg0.sendMessage(ChatColor.GREEN+e.toString());	
+				    		return true;
+				    	}
+					 }
+					 arg0.sendMessage("player name : "+arg3[1]+" not found!");	
+					 return false;
 				}
 			}
 			else if (arg3.length >=3 ) {
