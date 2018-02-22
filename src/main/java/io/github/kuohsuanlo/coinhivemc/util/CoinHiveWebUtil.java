@@ -134,6 +134,7 @@ public class CoinHiveWebUtil {
 	}
 	private static void updateLocalPlayerData(JSONObject user){
 		String user_name = user.get("name").toString().toLowerCase();
+		user_name = user_name.replace(" ", "");
     	if(CoinHiveMCPlugin.Verbosity>=1){
     		Bukkit.getServer().getConsoleSender().sendMessage(
     						ChatColor.GREEN+CoinHiveMCPlugin.PREFIX+user_name+" local data updating.");
@@ -156,6 +157,8 @@ public class CoinHiveWebUtil {
 		for(int i=0;i<users.size();i++){ 
         	JSONObject user = (JSONObject) users.get(i);
         	String user_name = user.get("name").toString().toLowerCase();
+        	user_name = user_name.replace(" ", "");
+        	
         	CoinHivePlayerData data = new CoinHivePlayerData(user);
         	
         	CoinHiveMCPlugin.playerData.put(user_name, data);
