@@ -15,6 +15,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -36,8 +37,8 @@ import io.github.kuohsuanlo.coinhivemc.util.CoinHivePlayerData;
 import net.md_5.bungee.api.ChatColor;
 
 public class CoinHiveMCListener implements Listener {
-	
-	@EventHandler
+	/*
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onPlayerInteract(PlayerInteractEvent event){
 		Player player = event.getPlayer();
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
@@ -57,6 +58,6 @@ public class CoinHiveMCListener implements Listener {
 		}
 		
 	}
-	
+	*/
   
 }
