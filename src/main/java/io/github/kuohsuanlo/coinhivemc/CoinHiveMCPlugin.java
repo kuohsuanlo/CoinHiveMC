@@ -142,7 +142,6 @@ public class CoinHiveMCPlugin extends JavaPlugin {
     	rlRegularUpdate = null;
     	rlRegularUpdate = new CoinHiveMCRegularUpdate(this);
     	updaterId = this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, rlRegularUpdate, 20, 20);
-        
     }
 
 }
